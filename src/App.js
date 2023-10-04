@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './style.css';
 
 const CATEGORIES = [
@@ -45,7 +46,18 @@ const initialFacts = [
   },
 ];
 
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return <div>
+    <span style={{fontSize: '40px'}}>{count}</span>
+    <button className='btn btn-large' onClick={()=> setCount((c) => c+1)}>+1</button>
+  </div>
+}
+
 function App() {
+  const [showForm, setShowForm] = useState(false);
+
   const appTitle = "Today I learned";
 
   return (
@@ -61,10 +73,12 @@ function App() {
     <h1>{appTitle}</h1>
   </div>
 
-  <button className="btn btn-large btn-open">Share a fact</button>
+  <button className="btn btn-large btn-open" onClick={()=>setShowForm((show)=> !show)}>Share a fact</button>
   </header>
 
-  <NewFactForm />
+  
+
+  {showForm ? <NewFactForm /> : null}
   <main className='main'>
 
   <CategoryFilter />
@@ -82,13 +96,17 @@ function NewFactForm(){
 function CategoryFilter() {
   return <aside><ul>
     <li className="category">
+              <button className="btn btn-all-categories">All</button>
+            </li>
+    {CATEGORIES.map((cat)=><li key={cat.name} className="category">
               <button
                 className="btn btn-category"
-                style={{backgroundColor: '#3b82f6'}}
+                style={{backgroundColor: cat.color}}
               >
-                Technology
+                {cat.name}
               </button>
-            </li>
+            </li>)}
+    
     </ul></aside>;
 }
 
